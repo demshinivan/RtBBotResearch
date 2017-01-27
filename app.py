@@ -50,9 +50,7 @@ def processRequest(req):
         print("Input to productHunt")
         baseurl = "https://0h4smabbsg-dsn.algolia.net/1/indexes/Post_production?query=whatsapp"
         yql_url = baseurl
-        req = urllib.request.urlopen(yql_url)
-        req.add_header('X-Algolia-API-Key', '9670d2d619b9d07859448d7628eea5f3')
-        req.add_header('X-Algolia-Application-Id', '0H4SMABBSG')
+        req = urllib.request.request(yql_url, headers={'X-Algolia-API-Key': '9670d2d619b9d07859448d7628eea5f3','X-Algolia-Application-Id': '0H4SMABBSG'}, method='GET')
         result = req.read()
         print(result)
         data = json.loads(result)
