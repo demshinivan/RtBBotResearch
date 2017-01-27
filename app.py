@@ -54,6 +54,7 @@ def processRequest(req):
         req.add_header('X-Algolia-API-Key', '9670d2d619b9d07859448d7628eea5f3')
         req.add_header('X-Algolia-Application-Id', '0H4SMABBSG')
         result = req.read()
+        print(result)
         data = json.loads(result)
         res = makeProductHuntWebhookResult(data)
         return res
