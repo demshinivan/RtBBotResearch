@@ -50,9 +50,12 @@ def processRequest(req):
         print("Input to productHunt")
         baseurl = "https://0h4smabbsg-dsn.algolia.net/1/indexes/Post_production?query=whatsapp"
         yql_url = baseurl
+        print("Start make request")
         req = urllib.request.request(yql_url, headers={'X-Algolia-API-Key': '9670d2d619b9d07859448d7628eea5f3','X-Algolia-Application-Id': '0H4SMABBSG'}, method='GET')
+        print("End make request")
         #result = urllib.request.urlopen(req).read()
         try:
+            print("Start urlopen")
             response = urllib.request.urlopen(req)
         except HTTPError as e:
             print('The server couldn\'t fulfill the request.')
