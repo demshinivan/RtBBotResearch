@@ -51,7 +51,20 @@ def processRequest(req):
         baseurl = "https://0h4smabbsg-dsn.algolia.net/1/indexes/Post_production?query=whatsapp"
         yql_url = baseurl
         req = urllib.request.request(yql_url, headers={'X-Algolia-API-Key': '9670d2d619b9d07859448d7628eea5f3','X-Algolia-Application-Id': '0H4SMABBSG'}, method='GET')
-        result = urllib.request.urlopen(req).read()
+        #result = urllib.request.urlopen(req).read()
+        try:
+            response = urllib.request.urlopen(req)
+        except HTTPError as e:
+            print('The server couldn\'t fulfill the request.')
+            print('Error code: ', e.code)
+        except URLError as e:
+            print('We failed to reach a server.')
+            print('Reason: ', e.reason)
+        else:
+            # everything is fine
+            print('everything is fine')
+            result = response.read()
+
         print(result)
         data = json.loads(result)
         res = makeProductHuntWebhookResult(data)
@@ -120,6 +133,7 @@ def makeWeatherWebhookResult(data):
     }
 
 def makeProductHuntWebhookResult(data):
+    print("Input to makeProductHuntWebhookResult")
     hits = data.get('hits')
     if query is None:
         return {}
