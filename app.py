@@ -44,7 +44,18 @@ def processRequest(req):
         yql_url = baseurl + urllib.parse.urlencode({'q': yql_query}) + "&format=json"
         result = urllib.request.urlopen(yql_url).read()
         data = json.loads(result)
-        res = makeWebhookResult(data)
+        res = makeWeatherWebhookResult(data)
+        return res
+    if req.get("result").get("action") == "productHunt":
+        print("Input to productHunt")
+        baseurl = "https://0h4smabbsg-dsn.algolia.net/1/indexes/Post_production?query=whatsapp"
+        yql_url = baseurl
+        req = urllib.request.urlopen(yql_url)
+        req.add_header('X-Algolia-API-Key', '9670d2d619b9d07859448d7628eea5f3')
+        req.add_header('X-Algolia-Application-Id', '0H4SMABBSG')
+        result = req.read()
+        data = json.loads(result)
+        res = makeProductHuntWebhookResult(data)
         return res
     elif req.get("result").get("action") == "testRtB":
         print("Input to testRtB")
@@ -70,7 +81,7 @@ def makeYqlQuery(req):
     return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
 
 
-def makeWebhookResult(data):
+def makeWeatherWebhookResult(data):
     query = data.get('query')
     if query is None:
         return {}
@@ -98,6 +109,31 @@ def makeWebhookResult(data):
     speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
              ", the temperature is " + condition.get('temp') + " " + units.get('temperature')
 
+    print("Response:")
+    print(speech)
+
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "apiai-rtbbotresearch"
+    }
+
+def makeProductHuntWebhookResult(data):
+    hits = data.get('hits')
+    if query is None:
+        return {}
+
+    cnt = 0;
+
+    for x in hits
+        speech = speech + "\n" + x.get('name')
+        cnt = cnt + 1
+        if cnt == 5:
+            break
+
+    speech = "Top product 5:"
     print("Response:")
     print(speech)
 
