@@ -127,7 +127,7 @@ def makeProductHuntWebhookResult(data):
 
     cnt = 0;
 
-    for x in hits
+    for x in hits:
         speech = speech + "\n" + x.get('name')
         cnt = cnt + 1
         if cnt == 5:
