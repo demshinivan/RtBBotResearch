@@ -48,15 +48,17 @@ def processRequest(req):
         return res
     if req.get("result").get("action") == "productHunt":
         print("Input to productHunt")
-        baseurl = "https://0h4smabbsg-dsn.algolia.net/1/indexes/Post_production?query=whatsapp"
-        yql_url = baseurl
+        baseurl = "https://0h4smabbsg-dsn.algolia.net/1/indexes/Post_production?"
+#        baseurl = "https://0h4smabbsg-dsn.algolia.net/1/indexes/Post_production?query=whatsapp"
+        yql_query = makePHQuery(req)
+        yql_url = baseurl + urllib.parse.urlencode({'query': yql_query})
         print("Start make request")
-        req = urllib.request.Request(yql_url, headers={'X-Algolia-API-Key': '9670d2d619b9d07859448d7628eea5f3','X-Algolia-Application-Id': '0H4SMABBSG'}, method='GET')
+        newreq = urllib.request.Request(yql_url, headers={'X-Algolia-API-Key': '9670d2d619b9d07859448d7628eea5f3','X-Algolia-Application-Id': '0H4SMABBSG'}, method='GET')
         print("End make request")
         #result = urllib.request.urlopen(req).read()
         try:
             print("Start urlopen")
-            response = urllib.request.urlopen(req)
+            response = urllib.request.urlopen(newreq)
         except HTTPError as e:
             print('The server couldn\'t fulfill the request.')
             print('Error code: ', e.code)
@@ -95,6 +97,17 @@ def makeYqlQuery(req):
 
     return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
 
+def makePHQuery(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    searchSTR = parameters.get("any")
+    print("searchSTR:")
+    print(searchSTR)
+    if searchSTR is None:
+        return None
+
+
+    return searchSTR
 
 def makeWeatherWebhookResult(data):
     query = data.get('query')
