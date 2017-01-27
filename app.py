@@ -159,6 +159,8 @@ def makeProductHuntWebhookResult(data):
 
     for x in hits:
         speech = speech + "\n" + x.get('name')
+        #speech = speech + "\nDescription: " + x.get('text_content')[0].get('description')
+        speech = speech + "\nURL: " + x.get('product_links')[0].get('url')
         cnt = cnt + 1
         if cnt == 5:
             break
