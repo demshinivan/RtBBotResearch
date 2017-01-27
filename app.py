@@ -33,6 +33,8 @@ def webhook():
 
 def processRequest(req):
     print("Input to processRequest")
+    print("action:")
+    print(req.get("result").get("action"))
     if req.get("result").get("action") == "yahooWeatherForecast":
         print("Input to yahooWeatherForecast")
         baseurl = "https://query.yahooapis.com/v1/public/yql?"
